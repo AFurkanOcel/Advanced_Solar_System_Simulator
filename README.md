@@ -70,4 +70,4 @@
 
 ## 🧑‍💻 Developer
 
-- **Furkan Öcel**
+- **A. Furkan Öcel**
