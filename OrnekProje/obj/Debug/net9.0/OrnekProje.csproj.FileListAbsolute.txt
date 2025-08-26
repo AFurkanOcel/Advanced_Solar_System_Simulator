@@ -1,0 +1,15 @@
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\bin\Debug\net9.0\OrnekProje.exe
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\bin\Debug\net9.0\OrnekProje.deps.json
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\bin\Debug\net9.0\OrnekProje.runtimeconfig.json
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\bin\Debug\net9.0\OrnekProje.dll
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\bin\Debug\net9.0\OrnekProje.pdb
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.GeneratedMSBuildEditorConfig.editorconfig
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.AssemblyInfoInputs.cache
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.AssemblyInfo.cs
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.csproj.CoreCompileInputs.cache
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.sourcelink.json
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.dll
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\refint\OrnekProje.dll
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.pdb
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\OrnekProje.genruntimeconfig.cache
+D:\github\AFurkanOcel\Advanced_Solar_System_Simulator\OrnekProje\obj\Debug\net9.0\ref\OrnekProje.dll
