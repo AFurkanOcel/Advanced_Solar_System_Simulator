@@ -52,10 +52,11 @@
 
 **Earth and Moon View**  
    The Earth page with the Moon orbiting around it.  
-<img width="1899" height="860" alt="world" src="https://github.com/user-attachments/assets/ff1272cd-6b4d-46f2-bead-b3012550f545" />
+<img width="1899" height="860" alt="earth" src="https://github.com/user-attachments/assets/5f674e87-20b1-493f-b9d9-de3273853763" />
+
 
 **Other Planets**  
-   Screenshots showing the remaining 7 planets and their moons.  
+   Screenshots showing the remaining 7 planets and moon.  
 
 
 ---
