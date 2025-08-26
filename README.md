@@ -48,15 +48,31 @@
 
 **Solar System View**  
    The main screen with the Sun and 8 planets orbiting around it.  
-<img width="1900" height="861" alt="solarsystem" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
+<img width="1800" alt="solarsystem" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
 
 **Earth and Moon View**  
    The Earth page with the Moon orbiting around it.  
-<img width="1899" height="860" alt="earth" src="https://github.com/user-attachments/assets/5f674e87-20b1-493f-b9d9-de3273853763" />
+<img width="1800" alt="earth" src="https://github.com/user-attachments/assets/5f674e87-20b1-493f-b9d9-de3273853763" />
 
 
 **Other Planets**  
-   Screenshots showing the remaining 7 planets and moon.  
+   Screenshots showing the remaining 7 planets and moon. 
+   
+<img width="400" alt="mercury" src="https://github.com/user-attachments/assets/729fe4c5-58db-4259-a4ee-f74f83d00e38" />
+
+<img width="400" alt="venus" src="https://github.com/user-attachments/assets/8fa2031f-fcb9-4093-9479-e806162711dd" />
+
+<img width="400" alt="mars" src="https://github.com/user-attachments/assets/01275a6c-7e5d-4dda-9851-811e0aa68817" />
+
+<img width="400" alt="jupiter" src="https://github.com/user-attachments/assets/dceb9e61-1684-4b86-a2ec-c860acecf5b2" />
+
+<img width="400" alt="saturn" src="https://github.com/user-attachments/assets/08ec5ef1-e2b7-4a3b-8d7d-c3f172c2fe65" />
+
+<img width="400" alt="uranus" src="https://github.com/user-attachments/assets/e64d7c8d-92c3-4412-9d87-cc9257e9097e" />
+
+<img width="400" alt="neptune" src="https://github.com/user-attachments/assets/233eb0f7-8de6-4df7-9d15-a8f66c85910c" />
+
+<img width="400" alt="moon" src="https://github.com/user-attachments/assets/aeea7ef8-a4a7-4ca5-bc31-364b6fd3a890" />
 
 
 ---
