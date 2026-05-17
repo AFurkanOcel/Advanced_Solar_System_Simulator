@@ -1,90 +1,289 @@
-# 🌞 Advanced Solar System Simulator
+<h1 align="center">Advanced Solar System Simulator</h1>
 
-**Advanced Solar System Simulator** is a 3D, comprehensive Solar System simulator developed using Python and VPython. It provides a realistic astronomical experience, allowing users to observe planets’ sizes, orbits, and rotation speeds accurately.  
-💻 **Note:** The application is accessible via the web.
+<p align="center">
+Interactive 3D solar system simulator built with Python, VPython and Pygame.
+</p>
 
----
-
-## 🎮 Features
-
-- **Realistic 3D Simulation:**  
-  - Correctly scaled sizes of the Sun and 8 planets with accurate surface textures.  
-  - Planets rotate around their axes and orbit the Sun at realistic speeds.  
-  - Time is scaled: 1 year = 0.000001 Earth years.
-
-- **Planet Selection Buttons:**  
-  - From left to right: `Solar System`, `Earth`, `Mercury`, `Venus`, `Mars`, `Jupiter`, `Saturn`, `Uranus`, `Neptune`, `Moon`.  
-  - The selected button is highlighted in green and displays the corresponding planet or system.
-
-- **Orbit and Pause Controls:**  
-  - `Orbit: No / Orbit: Yes`: Toggle the display of planet and moon orbits.  
-  - `Pause / Run`: Stop or start the simulation.
-
-- **Information Labels:**  
-  - Navigation instructions: `"Middle Click = Zoom    Right Click = Move"`.  
-  - Planetary and system time indicators:  
-    - Example: `Solar System -> Year: 0  (1 Year = 0.000001 Earth Year)`  
-    - Example: `Earth -> Day: 0  (1 Day = 0.0001 Earth Day)`  
-  - Values are calculated mathematically to simulate realistic time progression.
-
-- **Language Support:**  
-  - Switch the interface between `Turkish` and `English` using the corresponding buttons.
-
-- **Sound Control:**  
-  - `<)` button to manage audio:  
-    - `<)` normal volume  
-    - `<))` increased volume  
-    - `<` mute  
-    - Clicking again resets to `<)`.
-
-- **Immersive Experience:**  
-  - Simulates the view as if observing planets from an astronaut's perspective.  
-  - Relative planet sizes, surface textures, and rotation/orbit speeds are realistic.  
-  - Axial tilts are currently under development.
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-Python-blue"/>
+  <img src="https://img.shields.io/badge/3D-VPython-orange"/>
+  <img src="https://img.shields.io/badge/Audio-Pygame-green"/>
+  <img src="https://img.shields.io/badge/Simulation-Orbits%20%26%20Rotation-purple"/>
+  <img src="https://img.shields.io/badge/Interface-English%20%7C%20Turkish-red"/>
+  <img src="https://img.shields.io/badge/License-MIT-brightgreen"/>
+</p>
 
 ---
 
-## 📷 Screenshots
+## Project Overview
 
-**Solar System View**  
-   The main screen with the Sun and 8 planets orbiting around it.  
-<img width="1800" alt="solarsystem" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
+**Advanced Solar System Simulator** is an interactive astronomical visualization project that simulates the Sun, planets and the Moon in a 3D VPython environment.
 
-**Earth and Moon View**  
-   The Earth page with the Moon orbiting around it.  
-<img width="1800" alt="earth" src="https://github.com/user-attachments/assets/5f674e87-20b1-493f-b9d9-de3273853763" />
+The simulator focuses on visual learning by combining:
 
+* Planetary orbit animation
+* Planet self-rotation
+* Axial tilt visualization with north/south arrows
+* Scaled visual planet sizes
+* Textured planet surfaces
+* Bilingual interface support
+* Background music and sound controls
 
-**Other Planets**  
-   Screenshots showing the remaining 7 planets and moon. 
-   
-<img width="400" alt="mercury" src="https://github.com/user-attachments/assets/729fe4c5-58db-4259-a4ee-f74f83d00e38" />
+The project is designed as a desktop/web-rendered VPython simulation where users can switch between the full Solar System view and individual planet views.
 
-<img width="400" alt="venus" src="https://github.com/user-attachments/assets/8fa2031f-fcb9-4093-9479-e806162711dd" />
-
-<img width="400" alt="mars" src="https://github.com/user-attachments/assets/01275a6c-7e5d-4dda-9851-811e0aa68817" />
-
-<img width="400" alt="jupiter" src="https://github.com/user-attachments/assets/dceb9e61-1684-4b86-a2ec-c860acecf5b2" />
-
-<img width="400" alt="saturn" src="https://github.com/user-attachments/assets/08ec5ef1-e2b7-4a3b-8d7d-c3f172c2fe65" />
-
-<img width="400" alt="uranus" src="https://github.com/user-attachments/assets/e64d7c8d-92c3-4412-9d87-cc9257e9097e" />
-
-<img width="400" alt="neptune" src="https://github.com/user-attachments/assets/233eb0f7-8de6-4df7-9d15-a8f66c85910c" />
-
-<img width="400" alt="moon" src="https://github.com/user-attachments/assets/aeea7ef8-a4a7-4ca5-bc31-364b6fd3a890" />
-
+<img width="1800" alt="Solar System View" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
 
 ---
 
-## 💡 Notes
+## Project Structure
 
-- The simulation is based on real-time astronomical calculations.  
-- Time units such as 1 year or 1 day are scaled for the simulation.  
-- Axial tilts and advanced visualizations are still in progress.
+```text
+Advanced_Solar_System_Simulator/
+|-- SolarSystem.py
+|-- deneme.py
+|-- README.md
+|-- LICENSE
+|-- .gitignore
+|-- Advanced_Solar_System_Simulator.sln
+|
+|-- Images/
+|   |-- Sun.jpg
+|   |-- Mercury.jpg
+|   |-- Venus.jpg
+|   |-- Earth.jpg
+|   |-- Moon.jpg
+|   |-- Mars.jpg
+|   |-- Jupiter.jpg
+|   |-- Saturn.jpg
+|   |-- Uranus.jpg
+|   |-- Neptune.jpg
+|   |-- Space.jpg
+|   |-- Universe.jpg
+|   `-- other.png
+|
+|-- musics/
+|   `-- Universe_Music.mp3
+|
+`-- OrnekProje/
+    |-- Program.cs
+    `-- OrnekProje.csproj
+```
+
+### Main Files
+
+| File / Folder | Description |
+| --- | --- |
+| `SolarSystem.py` | Main simulator source code |
+| `deneme.py` | Experimental VPython axial tilt prototype |
+| `Images/` | Planet, Moon, Sun and space textures |
+| `musics/` | Background music asset |
+| `OrnekProje/` | Auxiliary C# sample project in the repository |
 
 ---
 
-## 🧑‍💻 Developer
+## Features
 
-- **A. Furkan Öcel**
+### 3D Solar System Simulation
+
+* Sun and 8 planets rendered with texture images
+* Planetary orbit animation around the Sun
+* Scaled planet sizes for visual comparison
+* Full Solar System scene and individual object scenes
+
+### Planet Rotation and Axial Tilt
+
+* Planets rotate around their own axes
+* Axial tilt values are represented visually
+* Red and blue arrows show north/south axis direction
+* Retrograde rotation support for planets such as Venus and Uranus
+* Moon axis visualization in Earth/Moon scenes
+
+### Orbit Controls
+
+* `Orbit:yes` displays orbital trails
+* `Orbit:no` hides trails and axis arrows
+* Solar System view shows planet orbit trails and compact axis arrows
+* Earth view shows Moon orbit trail and Earth/Moon axis arrows
+
+### Scene Navigation
+
+Users can switch between:
+
+* Solar System
+* Earth
+* Mercury
+* Venus
+* Mars
+* Jupiter
+* Saturn
+* Uranus
+* Neptune
+* Moon
+
+The active scene button is highlighted for easier navigation.
+
+### Time Indicators
+
+The simulator displays scene-specific time counters:
+
+* Solar System view: year counter
+* Planet views: day counter
+* Moon view: Moon day counter
+
+Time is scaled so the simulation remains observable and interactive.
+
+### Bilingual Interface
+
+The interface supports:
+
+* English
+* Turkish
+
+Users can switch language directly from the simulator controls.
+
+### Audio Support
+
+* Background music playback using Pygame
+* Sound button cycles between normal volume, increased volume and mute
+
+---
+
+## Technologies Used
+
+| Category | Technology |
+| --- | --- |
+| Language | Python |
+| 3D Rendering | VPython |
+| Math / Simulation | Python `math` module |
+| Audio | Pygame Mixer |
+| Assets | JPG textures, MP3 audio |
+| Interface | VPython buttons |
+| License | MIT |
+
+---
+
+## Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/AFurkanOcel/Advanced_Solar_System_Simulator.git
+```
+
+### 2. Open Project Folder
+
+```bash
+cd Advanced_Solar_System_Simulator
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install vpython pygame
+```
+
+### 4. Run the Simulator
+
+```bash
+python SolarSystem.py
+```
+
+VPython opens the simulation in a browser-based 3D canvas or local VPython environment depending on your setup.
+
+---
+
+## Controls
+
+| Control | Description |
+| --- | --- |
+| `Solar System` / planet buttons | Switch active scene |
+| `Orbit:yes / Orbit:no` | Toggle orbit trails and axis arrows |
+| `Pause / Run` | Pause or resume the simulation |
+| `Middle Click` | Zoom |
+| `Right Click` | Move camera |
+| `Turkish / English` | Change interface language |
+| Sound button | Cycle volume modes |
+
+---
+
+## Screenshots
+
+### Solar System View
+
+The main view shows the Sun and planets orbiting with textured surfaces.
+
+<img width="1800" alt="Solar System View" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
+
+### Earth and Moon View
+
+Earth scene with the Moon orbiting around it.
+
+<img width="1800" alt="Earth and Moon View" src="https://github.com/user-attachments/assets/5f674e87-20b1-493f-b9d9-de3273853763" />
+
+### Planet Views
+
+<p>
+  <img width="400" alt="Mercury" src="https://github.com/user-attachments/assets/729fe4c5-58db-4259-a4ee-f74f83d00e38" />
+  <img width="400" alt="Venus" src="https://github.com/user-attachments/assets/8fa2031f-fcb9-4093-9479-e806162711dd" />
+</p>
+
+<p>
+  <img width="400" alt="Mars" src="https://github.com/user-attachments/assets/01275a6c-7e5d-4dda-9851-811e0aa68817" />
+  <img width="400" alt="Jupiter" src="https://github.com/user-attachments/assets/dceb9e61-1684-4b86-a2ec-c860acecf5b2" />
+</p>
+
+<p>
+  <img width="400" alt="Saturn" src="https://github.com/user-attachments/assets/08ec5ef1-e2b7-4a3b-8d7d-c3f172c2fe65" />
+  <img width="400" alt="Uranus" src="https://github.com/user-attachments/assets/e64d7c8d-92c3-4412-9d87-cc9257e9097e" />
+</p>
+
+<p>
+  <img width="400" alt="Neptune" src="https://github.com/user-attachments/assets/233eb0f7-8de6-4df7-9d15-a8f66c85910c" />
+  <img width="400" alt="Moon" src="https://github.com/user-attachments/assets/aeea7ef8-a4a7-4ca5-bc31-364b6fd3a890" />
+</p>
+
+---
+
+## Implementation Notes
+
+* Planet data is centralized for axial tilt, rotation period and scene behavior.
+* Scene transitions are managed through helper functions to reduce repeated code.
+* Orbit trails are reset when scenes or orbit mode changes.
+* Axis arrows are dynamically updated based on the active scene.
+* Solar System axis arrows are compact so they remain visible without overwhelming the scene.
+
+---
+
+## Future Improvements
+
+* Add Saturn ring visualization
+* Add optional labels for planets
+* Add adjustable simulation speed
+* Add camera presets for each planet
+* Add more detailed astronomical information panels
+* Improve proportional distance scaling options
+
+---
+
+## Learning Outcomes
+
+This project helped improve experience in:
+
+* Python-based simulation development
+* VPython 3D scene management
+* Orbital motion and rotation logic
+* Visualizing axial tilt and direction vectors
+* Managing UI state in an interactive simulation
+* Organizing media assets in a desktop/web-rendered application
+
+---
+
+## Author
+
+**A. Furkan ÖCEL**
+
+---
+
+## License
+
+This project is licensed under the **MIT License**.
