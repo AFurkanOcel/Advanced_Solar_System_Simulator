@@ -100,7 +100,219 @@ uranus_day = 0
 neptune_day = 0
 moon_day = 0  
 
+def axis_from_tilt(tilt):
+    tilt_rad = radians(-tilt)
+    return norm(vector(sin(tilt_rad), cos(tilt_rad), 0))
+
+PLANET_AXES = {
+    'Mercury': {'tilt': 0.03, 'period': 50670, 'spin_direction': 1, 'body': Mercury, 'solar_body': Mercury_Sun, 'north_arrow': Mercury_North_Arrow, 'south_arrow': Mercury_South_Arrow},
+    'Venus': {'tilt': 177.36, 'period': 209952, 'spin_direction': -1, 'body': Venus, 'solar_body': Venus_Sun, 'north_arrow': Venus_North_Arrow, 'south_arrow': Venus_South_Arrow},
+    'Earth': {'tilt': 23.44, 'period': 864, 'spin_direction': 1, 'body': Earth, 'solar_body': Earth_Sun, 'north_arrow': Earth_North_Arrow, 'south_arrow': Earth_South_Arrow},
+    'Mars': {'tilt': 25.19, 'period': 886, 'spin_direction': 1, 'body': Mars, 'solar_body': Mars_Sun, 'north_arrow': Mars_North_Arrow, 'south_arrow': Mars_South_Arrow},
+    'Jupiter': {'tilt': 3.13, 'period': 357, 'spin_direction': 1, 'body': Jupiter, 'solar_body': Jupiter_Sun, 'north_arrow': Jupiter_North_Arrow, 'south_arrow': Jupiter_South_Arrow},
+    'Saturn': {'tilt': 26.73, 'period': 383, 'spin_direction': 1, 'body': Saturn, 'solar_body': Saturn_Sun, 'north_arrow': Saturn_North_Arrow, 'south_arrow': Saturn_South_Arrow},
+    'Uranus': {'tilt': 97.77, 'period': 620, 'spin_direction': -1, 'body': Uranus, 'solar_body': Uranus_Sun, 'north_arrow': Uranus_North_Arrow, 'south_arrow': Uranus_South_Arrow},
+    'Neptune': {'tilt': 28.32, 'period': 580, 'spin_direction': 1, 'body': Neptune, 'solar_body': Neptune_Sun, 'north_arrow': Neptune_North_Arrow, 'south_arrow': Neptune_South_Arrow},
+    'Moon': {'tilt': 6.68, 'period': 23587, 'spin_direction': 1, 'body': Moon, 'solar_body': None, 'north_arrow': Moon_North_Arrow, 'south_arrow': Moon_South_Arrow},
+}
+
+SOLAR_SYSTEM_PLANETS = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+
+def initialize_planet_axes():
+    for data in PLANET_AXES.values():
+        data['axis'] = axis_from_tilt(data['tilt'])
+        data['body'].up = data['axis']
+        if data['solar_body'] != None:
+            data['solar_body'].up = data['axis']
+        data['north_arrow'].shaftwidth = 0.05
+        data['south_arrow'].shaftwidth = 0.05
+
+def hide_all_axis_arrows():
+    for data in PLANET_AXES.values():
+        data['north_arrow'].visible = False
+        data['south_arrow'].visible = False
+
+def show_axis_arrows(names):
+    for name in names:
+        PLANET_AXES[name]['north_arrow'].visible = True
+        PLANET_AXES[name]['south_arrow'].visible = True
+
+def apply_orbit_visibility():
+    hide_all_axis_arrows()
+    if orbit == False:
+        return
+    if active_scene == 'SolarSystem':
+        show_axis_arrows(SOLAR_SYSTEM_PLANETS)
+    elif active_scene in PLANET_AXES:
+        show_axis_arrows([active_scene])
+    update_axis_arrows()
+
+def update_axis_arrows():
+    for name, data in PLANET_AXES.items():
+        if active_scene == 'SolarSystem':
+            if name not in SOLAR_SYSTEM_PLANETS:
+                continue
+            body = data['solar_body']
+            arrow_length = 0.15
+            shaftwidth = 0.006
+        elif active_scene == name:
+            body = data['body']
+            arrow_length = 1.5
+            shaftwidth = 0.05
+        else:
+            continue
+
+        data['north_arrow'].pos = body.pos
+        data['north_arrow'].axis = data['axis'] * arrow_length
+        data['north_arrow'].shaftwidth = shaftwidth
+        data['south_arrow'].pos = body.pos
+        data['south_arrow'].axis = -data['axis'] * arrow_length
+        data['south_arrow'].shaftwidth = shaftwidth
+
+def rotate_on_axis(body, data):
+    spin_angle = data['spin_direction'] * 2 * pi / data['period']
+    body.rotate(angle=spin_angle, axis=data['axis'], origin=body.pos)
+
+def rotate_planets_on_axes():
+    for data in PLANET_AXES.values():
+        rotate_on_axis(data['body'], data)
+        if data['solar_body'] != None:
+            rotate_on_axis(data['solar_body'], data)
+
+ACTIVE_BUTTON_COLOR = color.green
+PASSIVE_BUTTON_COLOR = color.white
+CONTROL_BUTTON_COLOR = hat(vector(110, 110, 110))
+INFO_BUTTON_COLOR = hat(vector(230, 230, 210))
+TIME_BUTTON_COLOR = color.black
+
+SCENE_NAMES = ['SolarSystem', 'Earth', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Moon']
+SCENE_LABELS = {
+    'English': {
+        'SolarSystem': 'Solar System',
+        'Earth': 'Earth',
+        'Mercury': 'Mercury',
+        'Venus': 'Venus',
+        'Mars': 'Mars',
+        'Jupiter': 'Jupiter',
+        'Saturn': 'Saturn',
+        'Uranus': 'Uranus',
+        'Neptune': 'Neptune',
+        'Moon': 'Moon',
+    },
+    'Turkish': {
+        'SolarSystem': 'Güneş Sistemi',
+        'Earth': 'Dünya',
+        'Mercury': 'Merkür',
+        'Venus': 'Venüs',
+        'Mars': 'Mars',
+        'Jupiter': 'Jüpiter',
+        'Saturn': 'Satürn',
+        'Uranus': 'Uranüs',
+        'Neptune': 'Neptün',
+        'Moon': 'Ay',
+    },
+}
+
+TIME_TEXT = {
+    'English': {
+        'SolarSystem': ('Year', '1 Year = 0,000001 Earth Year'),
+        'Earth': ('Day', '1 Day = 0,0001 Earth Day'),
+        'Mercury': ('Day', '1 Day = 0,0001 Mercury Day'),
+        'Venus': ('Day', '1 Day = 0,0001 Venus Day'),
+        'Mars': ('Day', '1 Day = 0,0001 Mars Day'),
+        'Jupiter': ('Day', '1 Day = 0,0001 Jupiter Day'),
+        'Saturn': ('Day', '1 Day = 0,0001 Saturn Day'),
+        'Uranus': ('Day', '1 Day = 0,0001 Uranus Day'),
+        'Neptune': ('Day', '1 Day = 0,0001 Neptune Day'),
+        'Moon': ('Day', '1 Day = 0,0001 Moon Day'),
+    },
+    'Turkish': {
+        'SolarSystem': ('Yıl', '1 Yıl = 0,000001 Dünya Yılı'),
+        'Earth': ('Gün', '1 Gün = 0,0001 Dünya Günü'),
+        'Mercury': ('Gün', '1 Gün = 0,0001 Merkür Günü'),
+        'Venus': ('Gün', '1 Gün = 0,0001 Venüs Günü'),
+        'Mars': ('Gün', '1 Gün = 0,0001 Mars Günü'),
+        'Jupiter': ('Gün', '1 Gün = 0,0001 Jüpiter Günü'),
+        'Saturn': ('Gün', '1 Gün = 0,0001 Satürn Günü'),
+        'Uranus': ('Gün', '1 Gün = 0,0001 Uranüs Günü'),
+        'Neptune': ('Gün', '1 Gün = 0,0001 Neptün Günü'),
+        'Moon': ('Gün', '1 Gün = 0,0001 Ay Günü'),
+    },
+}
+
+def get_scene_counter(scene_name):
+    if scene_name == 'SolarSystem':
+        return earth_year
+    if scene_name == 'Earth':
+        return earth_day
+    if scene_name == 'Mercury':
+        return mercury_day
+    if scene_name == 'Venus':
+        return venus_day
+    if scene_name == 'Mars':
+        return mars_day
+    if scene_name == 'Jupiter':
+        return jupiter_day
+    if scene_name == 'Saturn':
+        return saturn_day
+    if scene_name == 'Uranus':
+        return uranus_day
+    if scene_name == 'Neptune':
+        return neptune_day
+    if scene_name == 'Moon':
+        return moon_day
+    return 0
+
+def update_scene_buttons():
+    if 'SCENE_BUTTONS' not in globals():
+        return
+    for scene_name, scene_button in SCENE_BUTTONS.items():
+        scene_button.background = ACTIVE_BUTTON_COLOR if scene_name == active_scene else PASSIVE_BUTTON_COLOR
+
+def update_ui_text():
+    if 'SCENE_BUTTONS' not in globals():
+        return
+    labels = SCENE_LABELS[language]
+    for scene_name, scene_button in SCENE_BUTTONS.items():
+        scene_button.text = labels[scene_name]
+
+    if language == 'English':
+        button_Orbit.text = 'Orbit:yes' if orbit else 'Orbit:no'
+        button_Pause.text = 'Run' if paused else 'Pause'
+        button_Click.text = 'Middle Click = Zoom     Right Click = Move'
+    else:
+        button_Orbit.text = 'Yörünge:var' if orbit else 'Yörünge:yok'
+        button_Pause.text = 'Çalıştır' if paused else 'Durdur'
+        button_Click.text = 'Orta Tık = Zoom     Sağ Tık = Hareket'
+
+    label, description = TIME_TEXT[language][active_scene]
+    button_Time.text = f'{label}: {get_scene_counter(active_scene)}   ({description})'
+
+def apply_button_style():
+    if 'button_Orbit' not in globals():
+        return
+    button_Orbit.background = CONTROL_BUTTON_COLOR
+    button_Orbit.color = color.white
+    button_Pause.background = CONTROL_BUTTON_COLOR
+    button_Pause.color = color.white
+    button_Click.background = INFO_BUTTON_COLOR
+    button_Click.color = color.black
+    button_Time.background = TIME_BUTTON_COLOR
+    button_Time.color = color.white
+    button_TurFlag.background = hat(vector(180, 40, 40))
+    button_TurFlag.color = color.white
+    button_EngFlag.background = hat(vector(45, 80, 170))
+    button_EngFlag.color = color.white
+    button_Sound.background = hat(vector(210, 135, 35))
+    button_Sound.color = color.white
+
+def sync_ui():
+    update_scene_buttons()
+    update_ui_text()
+    apply_button_style()
+
 def Loading_Scene():
+    sync_ui()
     Sun.visible = False
     Mercury_Sun.visible = False
     Venus_Sun.visible = False
@@ -157,6 +369,7 @@ def Loading_Scene():
         Neptune_South_Arrow.visible = False
         Moon_North_Arrow.visible = False
         Moon_South_Arrow.visible = False
+        hide_all_axis_arrows()
 
     time.sleep(3)
 
@@ -232,6 +445,7 @@ def SolarSystem_Scene():
         Neptune_South_Arrow.visible = False
         Moon_North_Arrow.visible = False
         Moon_South_Arrow.visible = False
+        apply_orbit_visibility()
 
 def Earth_Scene():
     global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
@@ -896,6 +1110,7 @@ def Switch_Orbit():
         Uranus_Sun.make_trail = True
         Neptune_Sun.make_trail = True
         Moon_Earth.make_trail = True
+        apply_orbit_visibility()
         if active_scene == 'Earth':
             Earth_North_Arrow.visible = True
             Earth_South_Arrow.visible = True
@@ -928,6 +1143,7 @@ def Switch_Orbit():
             button_Orbit.text = 'Orbit:yes'
         else:
             button_Orbit.text = 'Yörünge:var'
+        sync_ui()
     else:
         orbit = False
         Earth_North_Arrow.visible = False
@@ -948,6 +1164,7 @@ def Switch_Orbit():
         Neptune_South_Arrow.visible = False
         Moon_North_Arrow.visible = False
         Moon_South_Arrow.visible = False
+        hide_all_axis_arrows()
 
         Mercury_Sun.make_trail = False
         Venus_Sun.make_trail = False
@@ -972,6 +1189,7 @@ def Switch_Orbit():
             button_Orbit.text = 'Orbit:no'
         else:
             button_Orbit.text = 'Yörünge:yok'
+        sync_ui()
 
 def Pause_Run():
     global paused
@@ -981,12 +1199,14 @@ def Pause_Run():
             button_Pause.text = 'Run'
         else:
             button_Pause.text = 'Çalıştır'
+        sync_ui()
     else:
         paused = False
         if language == 'English':
             button_Pause.text = 'Pause'
         else:
             button_Pause.text = 'Durdur'
+        sync_ui()
 
 def English_To_Turkish():
     global language
@@ -1030,6 +1250,7 @@ def English_To_Turkish():
         button_Time.text = f'Gün: {neptune_day}' + '   ' + '(1 Gün = 0,0001 Neptün Günü)'
     elif active_scene == 'Moon':
         button_Time.text = f'Gün: {moon_day}' + '   ' + '(1 Gün = 0,0001 Ay Günü)'
+    sync_ui()
 
 def Turkish_To_English():
     global language
@@ -1073,6 +1294,7 @@ def Turkish_To_English():
         button_Time.text = f'Day: {neptune_day}' + '   ' + '(1 Day = 0,0001 Neptune Day)'
     elif active_scene == 'Moon':
         button_Time.text = f'Day: {moon_day}' + '   ' + '(1 Day = 0,0001 Moon Day)'
+    sync_ui()
 
 def Sound_Level():
     global sound_level
@@ -1103,6 +1325,19 @@ button_Uranus = button(text='Uranus', pos=scene.title_anchor, bind=Uranus_Scene)
 button_Neptune = button(text='Neptune', pos=scene.title_anchor, bind=Neptune_Scene)
 button_Moon = button(text='Moon', pos=scene.title_anchor, bind=Moon_Scene)
 
+SCENE_BUTTONS = {
+    'SolarSystem': button_SolarSystem,
+    'Earth': button_Earth,
+    'Mercury': button_Mercury,
+    'Venus': button_Venus,
+    'Mars': button_Mars,
+    'Jupiter': button_Jupiter,
+    'Saturn': button_Saturn,
+    'Uranus': button_Uranus,
+    'Neptune': button_Neptune,
+    'Moon': button_Moon,
+}
+
 button_Orbit = button(text='Orbit:no', pos=scene.title_anchor, background=hat(vector(120,120,120)), color=color.white, bind=Switch_Orbit)
 
 button_Pause = button(text='Pause', pos=scene.title_anchor, background=hat(vector(120,120,120)), bind=Pause_Run)
@@ -1115,6 +1350,10 @@ button_TurFlag = button(text='Türkçe', pos=scene.title_anchor, background=colo
 button_EngFlag = button(text='English', pos=scene.title_anchor, background=color.blue, color=color.white, bind=Turkish_To_English)
 
 button_Sound = button(text='<)', pos=scene.title_anchor, background=color.orange, color=color.white, bind=Sound_Level)
+
+initialize_planet_axes()
+update_axis_arrows()
+sync_ui()
 
 while True:
     if paused == False:
@@ -1141,51 +1380,12 @@ while True:
 
         # 1 gün 8,64 saniye olsun (8,64s = 0,0001day, 1 dünya günü 24 saat aldım aslında 23,93 saat sonrasında düzeltebilirsin)
         t_moon -= 2 * pi / 23605 # 864 * 27,4 (27,4gün = ayın dünya etrafında 1 turu aslında 27,32 gün sonrasında düzeltebilirsin)
-        Earth.rotate(angle=2 * pi / 864, axis=vector(0, 1, 0)) 
-        Moon_Earth.rotate(angle=2 * pi / 23605, axis=vector(0, 1, 0)) # ayın kendi etrafında dönmesi
         Moon_Earth.pos = Earth.pos + vector(2.5 * cos(t_moon), 0, 2.5 * sin(t_moon)) # ayın dünya etrafında dönmesi
-        Earth_North_Arrow.rotate(angle=2 * pi / 864, axis=vector(0, 1, 0)) 
-        Earth_South_Arrow.rotate(angle=-2 * pi / 864, axis=vector(0, -1, 0))
 
-        # 1 merkür günü 506,70 saniye olsun (506,7s = 0,0001mercuryday, 1 merkür günü 1407,5 saat yani 5,067 milyon saniye)
-        Mercury.rotate(angle=2 * pi / 50670, axis=vector(0,1,0))
-        Mercury_North_Arrow.rotate(angle=2 * pi / 50670, axis=vector(0, 1, 0)) 
-        Mercury_South_Arrow.rotate(angle=-2 * pi / 50670, axis=vector(0, -1, 0))
-        
-        # 1 venüs günü 2099,52 saniye olsun (2099,52s = 0,0001venusday, 1 venüs günü 5832 saat yani 20,9952 milyon saniye)
-        Venus.rotate(angle=2 * pi / 209952, axis=vector(0,1,0))
-        Venus_North_Arrow.rotate(angle=2 * pi / 209952, axis=vector(0, 1, 0)) 
-        Venus_South_Arrow.rotate(angle=-2 * pi / 209952, axis=vector(0, -1, 0))
-
-        # 1 mars günü 8,86 saniye olsun (8,86 saniye = 0,0001marsday, 1 mars günü 24,62 saat yani 88632 saniye)
-        Mars.rotate(angle=2 * pi / 886, axis=vector(0,1,0))
-        Mars_North_Arrow.rotate(angle=2 * pi / 886, axis=vector(0, 1, 0)) 
-        Mars_South_Arrow.rotate(angle=-2 * pi / 886, axis=vector(0, -1, 0))
-
-        # 1 jüpiter günü 3,57 saniye olsun (3,57 saniye = 0,0001jupiterday, 1 jüpiter günü 9,93 saat yani 35748 saniye)
-        Jupiter.rotate(angle=2 * pi / 357, axis=vector(0,1,0))
-        Jupiter_North_Arrow.rotate(angle=2 * pi / 357, axis=vector(0, 1, 0)) 
-        Jupiter_South_Arrow.rotate(angle=-2 * pi / 357, axis=vector(0, -1, 0))
-
-        # 1 satürn günü 3,83 saniye olsun (3,83 saniye = 0,0001saturnday, 1 satürn günü 10,66 saat yani 38376 saniye)
-        Saturn.rotate(angle=2 * pi / 383, axis=vector(0,1,0))
-        Saturn_North_Arrow.rotate(angle=2 * pi / 383, axis=vector(0, 1, 0)) 
-        Saturn_South_Arrow.rotate(angle=-2 * pi / 383, axis=vector(0, -1, 0))
-
-        # 1 uranüs günü 6,20 saniye olsun (6,20 saniye = 0,0001uranusday, 1 uranüs günü 17,24 saat yani 62064  saniye)
-        Uranus.rotate(angle=2 * pi / 620, axis=vector(0,1,0))
-        Uranus_North_Arrow.rotate(angle=2 * pi / 620, axis=vector(0, 1, 0)) 
-        Uranus_South_Arrow.rotate(angle=-2 * pi / 620, axis=vector(0, -1, 0))
-
-        # 1 neptün günü 5,80 saniye olsun (5,80 saniye = 0.0001neptuneday, 1 neptün günü 16,11 saat yani 57996 saniye)
-        Neptune.rotate(angle=2 * pi / 580, axis=vector(0,1,0))
-        Neptune_North_Arrow.rotate(angle=2 * pi / 580, axis=vector(0, 1, 0)) 
-        Neptune_South_Arrow.rotate(angle=-2 * pi / 580, axis=vector(0, -1, 0))
-
-        # 1 ay günü 235,87 saniye olsun (235,87 saniye = 0,0001moonday, 1 ay günü 655,2 saat yani 2,3587 milyon saniye)
-        Moon.rotate(angle=2 * pi / 23587, axis=vector(0,1,0))
-        Moon_North_Arrow.rotate(angle=2 * pi / 23587, axis=vector(0, 1, 0)) 
-        Moon_South_Arrow.rotate(angle=-2 * pi / 23587, axis=vector(0, -1, 0))
+        # Gezegenler gerçek eksen eğikliklerine yakın eksenlerde, mevcut simülasyon hızlarıyla döner.
+        rotate_planets_on_axes()
+        rotate_on_axis(Moon_Earth, PLANET_AXES['Moon'])
+        update_axis_arrows()
 
         if active_scene == 'SolarSystem': 
             time_SolarSystem += 1
