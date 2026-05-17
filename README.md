@@ -148,6 +148,110 @@ Users can switch language directly from the simulator controls.
 
 ---
 
+## Simulation Model
+
+The simulator uses simplified mathematical models to make planetary motion visually understandable while preserving realistic relationships such as orbit order, rotation speed differences and axial tilt direction.
+
+### Orbital Motion
+
+Planet positions are calculated with a parametric circular orbit model:
+
+```text
+x = center_x + orbit_radius * cos(theta)
+z = center_z + orbit_radius * sin(theta)
+y = 0
+```
+
+In VPython vector form:
+
+```python
+planet.pos = Sun.pos + vector(
+    orbit_radius * cos(theta),
+    0,
+    orbit_radius * sin(theta)
+)
+```
+
+The orbit angle is updated every frame:
+
+```text
+theta = theta - 2*pi / orbit_period
+```
+
+This creates continuous orbital movement around the Sun. The same idea is used for the Moon orbiting Earth.
+
+### Rotation Around Own Axis
+
+Each planet rotates around its own axis using:
+
+```text
+rotation_angle = spin_direction * 2*pi / rotation_period
+```
+
+Where:
+
+| Term | Meaning |
+| --- | --- |
+| `spin_direction` | `1` for normal rotation, `-1` for retrograde rotation |
+| `rotation_period` | Scaled number of frames required for one full rotation |
+| `2*pi` | One complete rotation in radians |
+
+This allows planets such as **Venus** and **Uranus** to rotate in a retrograde direction.
+
+### Axial Tilt Calculation
+
+Axial tilt is represented as a normalized direction vector. The simulator converts a tilt angle into a 3D axis vector:
+
+```text
+tilt_rad = radians(-tilt)
+axis = normalize(vector(sin(tilt_rad), cos(tilt_rad), 0))
+```
+
+Equivalent code:
+
+```python
+def axis_from_tilt(tilt):
+    tilt_rad = radians(-tilt)
+    return norm(vector(sin(tilt_rad), cos(tilt_rad), 0))
+```
+
+This axis is used for:
+
+* rotating the planet
+* setting the visual up direction
+* drawing red/blue north-south axis arrows
+
+### Axis Arrow Visualization
+
+The north and south arrows use the same axial tilt vector:
+
+```text
+north_arrow.axis = axis * arrow_length
+south_arrow.axis = -axis * arrow_length
+```
+
+In the Solar System scene, arrow length is dynamically scaled so that large planets such as Jupiter and Saturn still keep visible axis indicators:
+
+```text
+arrow_length = max(planet_radius + 0.035, 0.10)
+```
+
+### Time Scaling
+
+Real astronomical periods are scaled down to keep the simulation observable. For example:
+
+| Object / Motion | Scaled Period Used |
+| --- | --- |
+| Earth orbit around Sun | `3155` frames |
+| Moon orbit around Earth | `23605` frames |
+| Earth self-rotation | `864` frames |
+| Jupiter self-rotation | `357` frames |
+| Neptune self-rotation | `580` frames |
+
+The goal is not to reproduce real-time astronomy second by second, but to preserve relative motion patterns in an interactive 3D environment.
+
+---
+
 ## Technologies Used
 
 | Category | Technology |
