@@ -126,6 +126,7 @@ def initialize_planet_axes():
             data['solar_body'].up = data['axis']
         data['north_arrow'].shaftwidth = 0.05
         data['south_arrow'].shaftwidth = 0.05
+    Moon_Earth.up = PLANET_AXES['Moon']['axis']
 
 def hide_all_axis_arrows():
     for data in PLANET_AXES.values():
@@ -143,6 +144,8 @@ def apply_orbit_visibility():
         return
     if active_scene == 'SolarSystem':
         show_axis_arrows(SOLAR_SYSTEM_PLANETS)
+    elif active_scene == 'Earth':
+        show_axis_arrows(['Earth', 'Moon'])
     elif active_scene in PLANET_AXES:
         show_axis_arrows([active_scene])
     update_axis_arrows()
@@ -153,8 +156,12 @@ def update_axis_arrows():
             if name not in SOLAR_SYSTEM_PLANETS:
                 continue
             body = data['solar_body']
-            arrow_length = 0.15
-            shaftwidth = 0.006
+            arrow_length = max(body.radius + 0.035, 0.10)
+            shaftwidth = 0.005
+        elif active_scene == 'Earth' and name == 'Moon':
+            body = Moon_Earth
+            arrow_length = 0.45
+            shaftwidth = 0.018
         elif active_scene == name:
             body = data['body']
             arrow_length = 1.5
@@ -178,6 +185,50 @@ def rotate_planets_on_axes():
         rotate_on_axis(data['body'], data)
         if data['solar_body'] != None:
             rotate_on_axis(data['solar_body'], data)
+
+SOLAR_TRAIL_BODIES = [Mercury_Sun, Venus_Sun, Earth_Sun, Mars_Sun, Jupiter_Sun, Saturn_Sun, Uranus_Sun, Neptune_Sun]
+ALL_TRAIL_BODIES = SOLAR_TRAIL_BODIES + [Moon_Earth]
+SCENE_BODIES = {
+    'SolarSystem': [Sun, Mercury_Sun, Venus_Sun, Earth_Sun, Mars_Sun, Jupiter_Sun, Saturn_Sun, Uranus_Sun, Neptune_Sun],
+    'Earth': [Earth, Moon_Earth],
+    'Mercury': [Mercury],
+    'Venus': [Venus],
+    'Mars': [Mars],
+    'Jupiter': [Jupiter],
+    'Saturn': [Saturn],
+    'Uranus': [Uranus],
+    'Neptune': [Neptune],
+    'Moon': [Moon],
+}
+ALL_BODIES = [Sun, Mercury_Sun, Venus_Sun, Earth_Sun, Mars_Sun, Jupiter_Sun, Saturn_Sun, Uranus_Sun, Neptune_Sun, Earth, Moon_Earth, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Moon]
+
+def clear_all_trails():
+    for body in ALL_TRAIL_BODIES:
+        body.clear_trail()
+
+def set_solar_trails(enabled):
+    for body in SOLAR_TRAIL_BODIES:
+        body.make_trail = enabled
+
+def set_moon_trail(enabled):
+    Moon_Earth.make_trail = enabled
+
+def hide_all_bodies():
+    for body in ALL_BODIES:
+        body.visible = False
+
+def show_scene_bodies(scene_name):
+    hide_all_bodies()
+    for body in SCENE_BODIES[scene_name]:
+        body.visible = True
+
+def configure_scene(scene_name):
+    show_scene_bodies(scene_name)
+    set_solar_trails(orbit and scene_name == 'SolarSystem')
+    set_moon_trail(orbit and scene_name == 'Earth')
+    clear_all_trails()
+    apply_orbit_visibility()
+    sync_ui()
 
 ACTIVE_BUTTON_COLOR = color.green
 PASSIVE_BUTTON_COLOR = color.white
@@ -312,988 +363,69 @@ def sync_ui():
     apply_button_style()
 
 def Loading_Scene():
+    hide_all_bodies()
+    set_solar_trails(False)
+    set_moon_trail(False)
+    if orbit:
+        clear_all_trails()
+    hide_all_axis_arrows()
     sync_ui()
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
-        hide_all_axis_arrows()
-
     time.sleep(3)
 
+def switch_scene(scene_name):
+    global active_scene
+    active_scene = scene_name
+    Loading_Scene()
+    configure_scene(scene_name)
+
 def SolarSystem_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'SolarSystem'
-    button_SolarSystem.background = color.green
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = True
-    Mercury_Sun.visible = True
-    Venus_Sun.visible = True
-    Earth_Sun.visible = True
-    Mars_Sun.visible = True
-    Jupiter_Sun.visible = True
-    Saturn_Sun.visible = True
-    Uranus_Sun.visible = True
-    Neptune_Sun.visible = True
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = True
-        Venus_Sun.make_trail = True
-        Earth_Sun.make_trail = True
-        Mars_Sun.make_trail = True
-        Jupiter_Sun.make_trail = True
-        Saturn_Sun.make_trail = True
-        Uranus_Sun.make_trail = True
-        Neptune_Sun.make_trail = True
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
-        apply_orbit_visibility()
+    switch_scene('SolarSystem')
 
 def Earth_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Earth'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.green
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = True
-    Moon_Earth.visible = True
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail()
-        Moon_Earth.make_trail = True
-        Earth_North_Arrow.visible = True
-        Earth_South_Arrow.visible = True
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Earth')
 
 def Mercury_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Mercury'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.green
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = True
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = True
-        Mercury_South_Arrow.visible = True
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Mercury')
 
 def Venus_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Venus'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.green
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = True
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = True
-        Venus_South_Arrow.visible = True
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Venus')
 
 def Mars_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Mars'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.green
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum    
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = True
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = True
-        Mars_South_Arrow.visible = True
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Mars')
 
 def Jupiter_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Jupiter'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.green
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = True
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = True
-        Jupiter_South_Arrow.visible = True
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Jupiter')
 
 def Saturn_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Saturn'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.green
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = True
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = True
-        Saturn_South_Arrow.visible = True
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Saturn')
 
 def Uranus_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Uranus'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.green
-    button_Neptune.background = color.white
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = True
-    Neptune.visible = False
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = True
-        Uranus_South_Arrow.visible = True
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Uranus')
 
 def Neptune_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Neptune'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.green
-    button_Moon.background = color.white
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = True
-    Moon.visible = False
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = True
-        Neptune_South_Arrow.visible = True
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
+    switch_scene('Neptune')
 
 def Moon_Scene():
-    global active_scene # bunu yazmak zorundayım yoksa active_scene i algılamıyor
-    active_scene = 'Moon'
-    button_SolarSystem.background = color.white
-    button_Earth.background = color.white
-    button_Mercury.background = color.white
-    button_Venus.background = color.white
-    button_Mars.background = color.white
-    button_Jupiter.background = color.white
-    button_Saturn.background = color.white
-    button_Uranus.background = color.white
-    button_Neptune.background = color.white
-    button_Moon.background = color.green
-
-    Loading_Scene() # Loading_Scene i burada çağırıyorum çünkü buton renkleri değiştikten sonra çalışsın istiyorum
-
-    Sun.visible = False
-    Mercury_Sun.visible = False
-    Venus_Sun.visible = False
-    Earth_Sun.visible = False
-    Mars_Sun.visible = False
-    Jupiter_Sun.visible = False
-    Saturn_Sun.visible = False
-    Uranus_Sun.visible = False
-    Neptune_Sun.visible = False
-    Earth.visible = False
-    Moon_Earth.visible = False
-    Mercury.visible = False
-    Venus.visible = False
-    Mars.visible = False
-    Jupiter.visible = False
-    Saturn.visible = False
-    Uranus.visible = False
-    Neptune.visible = False
-    Moon.visible = True
-
-    if orbit == True: # bu sahneye geçerken kuyruk oluşumu sıfırdan başlasın diye böyle yapıyorum
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail() # önceki sahnede olan kuyrukları da silmemiz gerekiyor
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = True
-        Moon_South_Arrow.visible = True
+    switch_scene('Moon')
 
 def Switch_Orbit():
     global orbit
-    if orbit == False:
-        orbit = True
-        Mercury_Sun.make_trail = True
-        Venus_Sun.make_trail = True
-        Earth_Sun.make_trail = True
-        Mars_Sun.make_trail = True
-        Jupiter_Sun.make_trail = True
-        Saturn_Sun.make_trail = True
-        Uranus_Sun.make_trail = True
-        Neptune_Sun.make_trail = True
-        Moon_Earth.make_trail = True
-        apply_orbit_visibility()
-        if active_scene == 'Earth':
-            Earth_North_Arrow.visible = True
-            Earth_South_Arrow.visible = True
-        elif active_scene == 'Mercury':
-            Mercury_North_Arrow.visible = True
-            Mercury_South_Arrow.visible = True
-        elif active_scene == 'Venus':
-            Venus_North_Arrow.visible = True
-            Venus_South_Arrow.visible = True
-        elif active_scene == 'Mars':
-            Mars_North_Arrow.visible = True
-            Mars_South_Arrow.visible = True
-        elif active_scene == 'Jupiter':
-            Jupiter_North_Arrow.visible = True
-            Jupiter_South_Arrow.visible = True
-        elif active_scene == 'Saturn':
-            Saturn_North_Arrow.visible = True
-            Saturn_South_Arrow.visible = True
-        elif active_scene == 'Uranus':
-            Uranus_North_Arrow.visible = True
-            Uranus_South_Arrow.visible = True
-        elif active_scene == 'Neptune':
-            Neptune_North_Arrow.visible = True
-            Neptune_South_Arrow.visible = True
-        elif active_scene == 'Moon':
-            Moon_North_Arrow.visible = True
-            Moon_South_Arrow.visible = True
-
-        if language == 'English':
-            button_Orbit.text = 'Orbit:yes'
-        else:
-            button_Orbit.text = 'Yörünge:var'
-        sync_ui()
-    else:
-        orbit = False
-        Earth_North_Arrow.visible = False
-        Earth_South_Arrow.visible = False
-        Mercury_North_Arrow.visible = False
-        Mercury_South_Arrow.visible = False
-        Venus_North_Arrow.visible = False
-        Venus_South_Arrow.visible = False
-        Mars_North_Arrow.visible = False
-        Mars_South_Arrow.visible = False
-        Jupiter_North_Arrow.visible = False
-        Jupiter_South_Arrow.visible = False
-        Saturn_North_Arrow.visible = False
-        Saturn_South_Arrow.visible = False
-        Uranus_North_Arrow.visible = False
-        Uranus_South_Arrow.visible = False
-        Neptune_North_Arrow.visible = False
-        Neptune_South_Arrow.visible = False
-        Moon_North_Arrow.visible = False
-        Moon_South_Arrow.visible = False
-        hide_all_axis_arrows()
-
-        Mercury_Sun.make_trail = False
-        Venus_Sun.make_trail = False
-        Earth_Sun.make_trail = False
-        Mars_Sun.make_trail = False
-        Jupiter_Sun.make_trail = False
-        Saturn_Sun.make_trail = False
-        Uranus_Sun.make_trail = False
-        Neptune_Sun.make_trail = False
-        Moon_Earth.make_trail = False
-        Mercury_Sun.clear_trail()
-        Venus_Sun.clear_trail()
-        Earth_Sun.clear_trail()
-        Mars_Sun.clear_trail()
-        Jupiter_Sun.clear_trail()
-        Saturn_Sun.clear_trail()
-        Uranus_Sun.clear_trail()
-        Neptune_Sun.clear_trail()
-        Moon_Earth.clear_trail()
-
-        if language == 'English':
-            button_Orbit.text = 'Orbit:no'
-        else:
-            button_Orbit.text = 'Yörünge:yok'
-        sync_ui()
+    orbit = not orbit
+    configure_scene(active_scene)
 
 def Pause_Run():
     global paused
-    if paused == False:
-        paused = True
-        if language == 'English':
-            button_Pause.text = 'Run'
-        else:
-            button_Pause.text = 'Çalıştır'
-        sync_ui()
-    else:
-        paused = False
-        if language == 'English':
-            button_Pause.text = 'Pause'
-        else:
-            button_Pause.text = 'Durdur'
-        sync_ui()
+    paused = not paused
+    sync_ui()
 
 def English_To_Turkish():
     global language
     language = "Turkish"
-    button_SolarSystem.text = "Güneş Sistemi"
-    button_Earth.text = "Dünya"
-    button_Mercury.text = "Merkür"
-    button_Venus.text = "Venüs"
-    button_Mars.text = "Mars"
-    button_Jupiter.text = "Jüpiter"
-    button_Saturn.text = "Satürn"
-    button_Uranus.text = "Uranüs"
-    button_Neptune.text = "Neptün"
-    button_Moon.text = "Ay"
-    if orbit == False:
-        button_Orbit.text = 'Yörünge:yok'
-    else:
-        button_Orbit.text = 'Yörünge:var'
-    if paused == False:
-        button_Pause.text = 'Durdur'
-    else:
-        button_Pause.text = 'Çalıştır'
-    button_Click.text = 'Orta Tık = Zoom     Sağ Tık = Hareket'
-    if active_scene == 'SolarSystem': 
-        button_Time.text = f'Yıl: {earth_year}' + '   ' + '(1 Yıl = 0,000001 Dünya Yılı)'
-    elif active_scene == 'Earth':
-        button_Time.text = f'Gün: {earth_day}' + '   ' + '(1 Gün = 0,0001 Dünya Günü)'
-    elif active_scene == 'Mercury':
-        button_Time.text = f'Gün: {mercury_day}' + '   ' + '(1 Gün = 0,0001 Merkür Günü)'
-    elif active_scene == 'Venus':
-        button_Time.text = f'Gün: {venus_day}' + '   ' + '(1 Gün = 0,0001 Venüs Günü)'
-    elif active_scene == 'Mars':
-        button_Time.text = f'Gün: {mars_day}' + '   ' + '(1 Gün = 0,0001 Mars Günü)'
-    elif active_scene == 'Jupiter':
-        button_Time.text = f'Gün: {jupiter_day}' + '   ' + '(1 Gün = 0,0001 Jüpiter Günü)'
-    elif active_scene == 'Saturn':
-        button_Time.text = f'Gün: {saturn_day}' + '   ' + '(1 Gün = 0,0001 Satürn Günü)'
-    elif active_scene == 'Uranus':
-        button_Time.text = f'Gün: {uranus_day}' + '   ' + '(1 Gün = 0,0001 Uranüs Günü)'
-    elif active_scene == 'Neptune':
-        button_Time.text = f'Gün: {neptune_day}' + '   ' + '(1 Gün = 0,0001 Neptün Günü)'
-    elif active_scene == 'Moon':
-        button_Time.text = f'Gün: {moon_day}' + '   ' + '(1 Gün = 0,0001 Ay Günü)'
     sync_ui()
 
 def Turkish_To_English():
     global language
     language = "English"
-    button_SolarSystem.text = "Solar System"
-    button_Earth.text = "Earth"
-    button_Mercury.text = "Mercury"
-    button_Venus.text = "Venus"
-    button_Mars.text = "Mars"
-    button_Jupiter.text = "Jupiter"
-    button_Saturn.text = "Saturn"
-    button_Uranus.text = "Uranus"
-    button_Neptune.text = "Neptune"
-    button_Moon.text = "Moon"
-    if orbit == False:
-        button_Orbit.text = 'Orbit:no'
-    else:
-        button_Orbit.text = 'Orbit:yes'
-    if paused == False:
-        button_Pause.text = 'Pause'
-    else:
-        button_Pause.text = 'Run'
-    button_Click.text = 'Middle Click = Zoom     Right Click = Move'
-    if active_scene == 'SolarSystem': 
-        button_Time.text = f'Year: {earth_year}' + '   ' + '(1 Year = 0,000001 Earth Year)'
-    elif active_scene == 'Earth':
-        button_Time.text = f'Day: {earth_day}' + '   ' + '(1 Day = 0,0001 Earth Day)'
-    elif active_scene == 'Mercury':
-        button_Time.text = f'Day: {mercury_day}' + '   ' + '(1 Day = 0,0001 Mercury Day)'
-    elif active_scene == 'Venus':
-        button_Time.text = f'Day: {venus_day}' + '   ' + '(1 Day = 0,0001 Venus Day)'
-    elif active_scene == 'Mars':
-        button_Time.text = f'Day: {mars_day}' + '   ' + '(1 Day = 0,0001 Mars Day)'
-    elif active_scene == 'Jupiter':
-        button_Time.text = f'Day: {jupiter_day}' + '   ' + '(1 Day = 0,0001 Jupiter Day)'
-    elif active_scene == 'Saturn':
-        button_Time.text = f'Day: {saturn_day}' + '   ' + '(1 Day = 0,0001 Saturn Day)'
-    elif active_scene == 'Uranus':
-        button_Time.text = f'Day: {uranus_day}' + '   ' + '(1 Day = 0,0001 Uranus Day)'
-    elif active_scene == 'Neptune':
-        button_Time.text = f'Day: {neptune_day}' + '   ' + '(1 Day = 0,0001 Neptune Day)'
-    elif active_scene == 'Moon':
-        button_Time.text = f'Day: {moon_day}' + '   ' + '(1 Day = 0,0001 Moon Day)'
     sync_ui()
 
 def Sound_Level():
