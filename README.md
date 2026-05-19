@@ -390,4 +390,4 @@ This project helped improve experience in:
 
 ## License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the terms included in the repository's `LICENSE` file.
