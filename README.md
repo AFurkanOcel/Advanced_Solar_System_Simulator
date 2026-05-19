@@ -11,7 +11,7 @@ Interactive 3D solar system simulator built with Python, VPython and Pygame.
   <img src="https://img.shields.io/badge/Simulation-Orbits%20%26%20Rotation-purple"/>
   <img src="https://img.shields.io/badge/Interface-English%20%7C%20Turkish-red"/>
   <img src="https://img.shields.io/badge/License-MIT-brightgreen"/>
-    <img src="https://img.shields.io/badge/Status-Completed-brightgreen"/>
+  <img src="https://img.shields.io/badge/Status-Completed-brightgreen"/>
 </p>
 
 ---
