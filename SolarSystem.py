@@ -12,55 +12,55 @@ sound_level = 1
 pygame.mixer.init()
 pygame.mixer.music.set_volume(0.5) # başlangıç seviyesini 0.5 ayarladım. bunu ses butonuyla Sound_Level fonksiyonuna erişerek artırıp azaltabiliyoruz
 # müzik dosyasını yükleme ve çalıştırma
-pygame.mixer.music.load("musics/Universe_Music.mp3")
+pygame.mixer.music.load("assets/music/Universe_Music.mp3")
 pygame.mixer.music.play(loops=-1, start=15.0) # start=15 deyince müzik dosyasını 13.saniyesinden itibaren çalmaya başlıyor, loops=-1 deyince döngüyü sonsuz hale getiriyor
     
 active_scene = 'SolarSystem'
 
-Sun = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Sun.jpg", visible=True)
-Mercury_Sun = sphere(radius=0.0035, texture="Images/Mercury.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Venus_Sun = sphere(radius=0.0087, texture="Images/Venus.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Earth_Sun = sphere(radius=0.0091, texture="Images/Earth.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Mars_Sun = sphere(radius=0.0048, texture="Images/Mars.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Jupiter_Sun = sphere(radius=0.1004, texture="Images/Jupiter.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Saturn_Sun = sphere(radius=0.0836, texture="Images/Saturn.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Uranus_Sun = sphere(radius=0.0364, texture="Images/Uranus.jpg", make_trail=False, trail_radius=0.002, visible=True)
-Neptune_Sun = sphere(radius=0.0353, texture="Images/Neptune.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Sun = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Sun.jpg", visible=True)
+Mercury_Sun = sphere(radius=0.0035, texture="assets/textures/Mercury.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Venus_Sun = sphere(radius=0.0087, texture="assets/textures/Venus.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Earth_Sun = sphere(radius=0.0091, texture="assets/textures/Earth.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Mars_Sun = sphere(radius=0.0048, texture="assets/textures/Mars.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Jupiter_Sun = sphere(radius=0.1004, texture="assets/textures/Jupiter.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Saturn_Sun = sphere(radius=0.0836, texture="assets/textures/Saturn.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Uranus_Sun = sphere(radius=0.0364, texture="assets/textures/Uranus.jpg", make_trail=False, trail_radius=0.002, visible=True)
+Neptune_Sun = sphere(radius=0.0353, texture="assets/textures/Neptune.jpg", make_trail=False, trail_radius=0.002, visible=True)
 
-Earth = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Earth.jpg", visible=False)
-Moon_Earth = sphere(radius=0.2723, texture="Images/Moon.jpg", make_trail=False, trail_radius=0.005, visible=False)
+Earth = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Earth.jpg", visible=False)
+Moon_Earth = sphere(radius=0.2723, texture="assets/textures/Moon.jpg", make_trail=False, trail_radius=0.005, visible=False)
 Earth_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Earth_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Mercury = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Mercury.jpg", visible=False)
+Mercury = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Mercury.jpg", visible=False)
 Mercury_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Mercury_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Venus = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Venus.jpg", visible=False)
+Venus = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Venus.jpg", visible=False)
 Venus_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Venus_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Mars = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Mars.jpg", visible=False)
+Mars = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Mars.jpg", visible=False)
 Mars_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Mars_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Jupiter = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Jupiter.jpg", visible=False)
+Jupiter = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Jupiter.jpg", visible=False)
 Jupiter_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Jupiter_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Saturn = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Saturn.jpg", visible=False)
+Saturn = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Saturn.jpg", visible=False)
 Saturn_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Saturn_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Uranus = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Uranus.jpg", visible=False)
+Uranus = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Uranus.jpg", visible=False)
 Uranus_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Uranus_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Neptune = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Neptune.jpg", visible=False)
+Neptune = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Neptune.jpg", visible=False)
 Neptune_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Neptune_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 
-Moon = sphere(pos=vector(0, 0, 0), radius=1, texture="Images/Moon.jpg", visible=False)
+Moon = sphere(pos=vector(0, 0, 0), radius=1, texture="assets/textures/Moon.jpg", visible=False)
 Moon_North_Arrow = arrow(pos=vector(0,1,0), axis=vector(0,1,0), length=0.4, color=color.red, visible=False)
 Moon_South_Arrow = arrow(pos=vector(0,-1,0), axis=vector(0,-1,0), length=0.4, color=color.blue, visible=False)
 

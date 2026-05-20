@@ -14,7 +14,7 @@ axis_tilted = vector(sin(tilt_rad), cos(tilt_rad), 0)
 earth = sphere(
     pos=vector(0, 0, 0),
     radius=1,
-    texture="Images/Earth.jpg",
+    texture="assets/textures/Earth.jpg",
     up=axis_tilted
 )
 

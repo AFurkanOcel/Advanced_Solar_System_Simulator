@@ -32,7 +32,7 @@ The simulator focuses on visual learning by combining:
 
 The project is designed as a desktop/web-rendered VPython simulation where users can switch between the full Solar System view and individual planet views.
 
-<img width="1800" alt="Solar System View" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
+<img width="1800" alt="Solar System View" src="assets/screenshots/solar-system-view.png" />
 
 ---
 
@@ -47,23 +47,36 @@ Advanced_Solar_System_Simulator/
 |-- .gitignore
 |-- Advanced_Solar_System_Simulator.sln
 |
-|-- Images/
-|   |-- Sun.jpg
-|   |-- Mercury.jpg
-|   |-- Venus.jpg
-|   |-- Earth.jpg
-|   |-- Moon.jpg
-|   |-- Mars.jpg
-|   |-- Jupiter.jpg
-|   |-- Saturn.jpg
-|   |-- Uranus.jpg
-|   |-- Neptune.jpg
-|   |-- Space.jpg
-|   |-- Universe.jpg
-|   `-- other.png
-|
-|-- musics/
-|   `-- Universe_Music.mp3
+|-- assets/
+|   |-- textures/
+|   |   |-- Sun.jpg
+|   |   |-- Mercury.jpg
+|   |   |-- Venus.jpg
+|   |   |-- Earth.jpg
+|   |   |-- Moon.jpg
+|   |   |-- Mars.jpg
+|   |   |-- Jupiter.jpg
+|   |   |-- Saturn.jpg
+|   |   |-- Uranus.jpg
+|   |   |-- Neptune.jpg
+|   |   |-- Space.jpg
+|   |   |-- Universe.jpg
+|   |   `-- other.png
+|   |
+|   |-- screenshots/
+|   |   |-- solar-system-view.png
+|   |   |-- earth-and-moon-view.png
+|   |   |-- mercury-view.png
+|   |   |-- venus-view.png
+|   |   |-- mars-view.png
+|   |   |-- jupiter-view.png
+|   |   |-- saturn-view.png
+|   |   |-- uranus-view.png
+|   |   |-- neptune-view.png
+|   |   `-- moon-view.png
+|   |
+|   `-- music/
+|       `-- Universe_Music.mp3
 |
 `-- OrnekProje/
     |-- Program.cs
@@ -76,8 +89,9 @@ Advanced_Solar_System_Simulator/
 | --- | --- |
 | `SolarSystem.py` | Main simulator source code |
 | `deneme.py` | Experimental VPython axial tilt prototype |
-| `Images/` | Planet, Moon, Sun and space textures |
-| `musics/` | Background music asset |
+| `assets/textures/` | Planet, Moon, Sun and space textures |
+| `assets/screenshots/` | README screenshot images |
+| `assets/music/` | Background music asset |
 | `OrnekProje/` | Auxiliary C# sample project in the repository |
 
 ---
@@ -317,34 +331,34 @@ VPython opens the simulation in a browser-based 3D canvas or local VPython envir
 
 The main view shows the Sun and planets orbiting with textured surfaces.
 
-<img width="1800" alt="Solar System View" src="https://github.com/user-attachments/assets/f41cede3-d150-4d6d-80e1-f209625dcc5f" />
+<img width="1800" alt="Solar System View" src="assets/screenshots/solar-system-view.png" />
 
 ### Earth and Moon View
 
 Earth scene with the Moon orbiting around it.
 
-<img width="1800" alt="Earth and Moon View" src="https://github.com/user-attachments/assets/5f674e87-20b1-493f-b9d9-de3273853763" />
+<img width="1800" alt="Earth and Moon View" src="assets/screenshots/earth-and-moon-view.png" />
 
 ### Planet Views
 
 <p>
-  <img width="400" alt="Mercury" src="https://github.com/user-attachments/assets/729fe4c5-58db-4259-a4ee-f74f83d00e38" />
-  <img width="400" alt="Venus" src="https://github.com/user-attachments/assets/8fa2031f-fcb9-4093-9479-e806162711dd" />
+  <img width="400" alt="Mercury" src="assets/screenshots/mercury-view.png" />
+  <img width="400" alt="Venus" src="assets/screenshots/venus-view.png" />
 </p>
 
 <p>
-  <img width="400" alt="Mars" src="https://github.com/user-attachments/assets/01275a6c-7e5d-4dda-9851-811e0aa68817" />
-  <img width="400" alt="Jupiter" src="https://github.com/user-attachments/assets/dceb9e61-1684-4b86-a2ec-c860acecf5b2" />
+  <img width="400" alt="Mars" src="assets/screenshots/mars-view.png" />
+  <img width="400" alt="Jupiter" src="assets/screenshots/jupiter-view.png" />
 </p>
 
 <p>
-  <img width="400" alt="Saturn" src="https://github.com/user-attachments/assets/08ec5ef1-e2b7-4a3b-8d7d-c3f172c2fe65" />
-  <img width="400" alt="Uranus" src="https://github.com/user-attachments/assets/e64d7c8d-92c3-4412-9d87-cc9257e9097e" />
+  <img width="400" alt="Saturn" src="assets/screenshots/saturn-view.png" />
+  <img width="400" alt="Uranus" src="assets/screenshots/uranus-view.png" />
 </p>
 
 <p>
-  <img width="400" alt="Neptune" src="https://github.com/user-attachments/assets/233eb0f7-8de6-4df7-9d15-a8f66c85910c" />
-  <img width="400" alt="Moon" src="https://github.com/user-attachments/assets/aeea7ef8-a4a7-4ca5-bc31-364b6fd3a890" />
+  <img width="400" alt="Neptune" src="assets/screenshots/neptune-view.png" />
+  <img width="400" alt="Moon" src="assets/screenshots/moon-view.png" />
 </p>
 
 ---
