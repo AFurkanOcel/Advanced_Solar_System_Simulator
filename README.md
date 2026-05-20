@@ -41,11 +41,9 @@ The project is designed as a desktop/web-rendered VPython simulation where users
 ```text
 Advanced_Solar_System_Simulator/
 |-- SolarSystem.py
-|-- deneme.py
 |-- README.md
 |-- LICENSE
 |-- .gitignore
-|-- Advanced_Solar_System_Simulator.sln
 |
 |-- assets/
 |   |-- textures/
@@ -77,10 +75,6 @@ Advanced_Solar_System_Simulator/
 |   |
 |   `-- music/
 |       `-- Universe_Music.mp3
-|
-`-- OrnekProje/
-    |-- Program.cs
-    `-- OrnekProje.csproj
 ```
 
 ### Main Files
@@ -88,11 +82,9 @@ Advanced_Solar_System_Simulator/
 | File / Folder | Description |
 | --- | --- |
 | `SolarSystem.py` | Main simulator source code |
-| `deneme.py` | Experimental VPython axial tilt prototype |
 | `assets/textures/` | Planet, Moon, Sun and space textures |
 | `assets/screenshots/` | README screenshot images |
 | `assets/music/` | Background music asset |
-| `OrnekProje/` | Auxiliary C# sample project in the repository |
 
 ---
 
