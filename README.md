@@ -44,7 +44,6 @@ Advanced_Solar_System_Simulator/
 |-- README.md
 |-- LICENSE
 |-- .gitignore
-|
 |-- assets/
 |   |-- textures/
 |   |   |-- Sun.jpg
@@ -60,19 +59,7 @@ Advanced_Solar_System_Simulator/
 |   |   |-- Space.jpg
 |   |   |-- Universe.jpg
 |   |   `-- other.png
-|   |
 |   |-- screenshots/
-|   |   |-- solar-system-view.png
-|   |   |-- earth-and-moon-view.png
-|   |   |-- mercury-view.png
-|   |   |-- venus-view.png
-|   |   |-- mars-view.png
-|   |   |-- jupiter-view.png
-|   |   |-- saturn-view.png
-|   |   |-- uranus-view.png
-|   |   |-- neptune-view.png
-|   |   `-- moon-view.png
-|   |
 |   `-- music/
 |       `-- Universe_Music.mp3
 ```
